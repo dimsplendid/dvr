@@ -10,13 +10,21 @@ const char *source_path = "main.c";
 const char *bin_path = "dvr.exe";
 
 const char *plug_path = "plug.c";
+#if __APPLE__
+const char *plug_target = "libplug.dylib";
+#else
 const char *plug_target = "plug.dll";
-
+#endif
 // prelude
 void cc(Cmd *cmd) {
+#if __APPLE__
+    cmd_append(cmd, "clang");
+    cmd_append(cmd, "-I", "/opt/homebrew/Cellar/raylib/5.5/include");
+#else
     cmd_append(cmd, "gcc");
-    cmd_append(cmd, "-Wall", "-Wextra", "-ggdb");
     cmd_append(cmd, "-I", "./raylib-5.5_win64_mingw-w64/include");
+#endif
+    cmd_append(cmd, "-Wall", "-Wextra", "-ggdb");
 }
 
 // epilogue
@@ -27,6 +35,10 @@ void libs(Cmd *cmd) {
     cmd_append(cmd, "-l:raylib.dll");
     cmd_append(cmd, "-l", "gdi32"); 
     cmd_append(cmd, "-l", "winmm");
+#elif __APPLE__
+    cmd_append(cmd, "-L", "/opt/homebrew/Cellar/raylib/5.5/lib");
+    cmd_append(cmd, "-lraylib");
+    cmd_append(cmd, "-Wl,-rpath,@executable_path"); 
 #else
     cmd_append(cmd, "-Wl,-rpath,./raylib-5.5_win64_mingw-w64/lib"); 
     cmd_append(cmd, "-Wl,-rpath,./"); 
@@ -61,8 +73,12 @@ bool build_main(Cmd *cmd) {
     cmd_append(cmd, source_path);
     cmd_append(cmd, "-ldl"); // dlfcn.h
     // cmd_append(cmd, "-O3");
-    cmd_append(cmd, "-L./");
-    cmd_append(cmd, temp_sprintf("-l:%s", plug_target));
+//     cmd_append(cmd, "-L./");
+// #if __APPLE__
+//     cmd_append(cmd, "-lplug");
+// #else
+//     cmd_append(cmd, temp_sprintf("-l:%s", plug_target));
+// #endif
     libs(cmd);
     return cmd_run(cmd);
 }

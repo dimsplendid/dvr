@@ -4,8 +4,11 @@
 #include <raylib.h>
 
 #include "plug.h"
-
+#if __APPLE__
+const char *libplug_path = "libplug.dylib";
+#else
 const char *libplug_path = "plug.dll";
+#endif
 void *libplug = NULL;
 
 bool reload_libplug(void) {

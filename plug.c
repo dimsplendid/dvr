@@ -40,7 +40,9 @@ void plug_update(void){
         DrawRectangle(
             w * (float)i / (float)rect_num,
             (h-rh)/ 2.0f + h/2.0f*(sinf(2*t + 1.0f * i / PI)) * (float)i / (float)rect_num,
-            rw, rh, RAYWHITE);
+            rw, rh,
+            GREEN);
+            // RAYWHITE);
     }
     // DrawRectangle((w-rw)*(sinf(t) + 1.0f) / 2.0f, (h-rh) / 2.0f, rw, rh, YELLOW);
     EndDrawing();
