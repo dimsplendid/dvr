@@ -50,7 +50,7 @@ int main(void) {
     SetTargetFPS(60);
     plug_init();
     
-    InitWindow(1600, 900, "VDR");
+    InitWindow(800, 600, "DVR");
     while(!WindowShouldClose()) {
         if (IsKeyPressed(KEY_R)) {
             void *state = plug_pre_reload();

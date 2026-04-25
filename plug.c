@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <raylib.h>
 #include <math.h>
+#include <raymath.h>
 
 #include "nob.h"
 
@@ -30,8 +31,8 @@ void plug_update(void){
     float h = GetScreenHeight();
     float dt = GetFrameTime(); UNUSED(dt);
     float t = GetTime();
-    size_t rect_num = 50;
-    float rw = w/rect_num - 2;
+    size_t rect_num = 200;
+    float rw = Clamp(w/rect_num-2 , 4, w);
     float rh = rw;
     
     BeginDrawing();
